@@ -9,22 +9,24 @@ warnings.filterwarnings("ignore")
 app = Flask(__name__)
 
 # Load the model
-model = joblib.load("house_price_model.pkl")
+model = joblib.load("tai.pkl")
 
-@app.route('/api/house', methods=['POST'])
+@app.route('/api/tai', methods=['POST'])
 def house():
-    age = int(request.form.get('age')) 
-    distance = int(request.form.get('distance')) 
-    minimart = int(request.form.get('minimart')) 
+    BloodPressure = int(request.form.get('1')) 
+    SpecificGravity = float(request.form.get('2')) 
+    BloodUrea = int(request.form.get('3'))
+    Sodium = float(request.form.get('4'))
+    Pottasium = float(request.form.get('5'))
     
     # Prepare the input for the model
-    x = np.array([[age, distance, minimart]])
+    x = np.array([[BloodPressure, SpecificGravity, BloodUrea,Sodium,Pottasium]])
 
     # Predict using the model
     prediction = model.predict(x)
 
     # Return the result
-    return {'price': round(prediction[0], 2)}, 200    
+    return {'tai': prediction[0].tolist()}, 200    
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=3000)
